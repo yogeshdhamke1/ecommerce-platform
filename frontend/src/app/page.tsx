@@ -6,11 +6,12 @@ import { CategoryFilter } from '@/components/filters/CategoryFilter'
 import { SearchBar } from '@/components/common/SearchBar'
 import { Hero } from '@/components/home/Hero'
 import { FeaturedCategories } from '@/components/home/FeaturedCategories'
+import { sampleCategories, sampleProducts } from '@/lib/sampleData'
 
 export default function HomePage() {
-  const [products, setProducts] = useState([])
-  const [categories, setCategories] = useState([])
-  const [loading, setLoading] = useState(true)
+  const [products, setProducts] = useState(sampleProducts)
+  const [categories] = useState(sampleCategories)
+  const [loading, setLoading] = useState(false)
   const [filters, setFilters] = useState({
     search: '',
     category: '',
@@ -18,36 +19,38 @@ export default function HomePage() {
   })
 
   useEffect(() => {
-    fetchProducts()
-    fetchCategories()
+    filterProducts()
   }, [filters])
 
-  const fetchProducts = async () => {
-    try {
-      setLoading(true)
-      const params = new URLSearchParams()
-      if (filters.search) params.append('search', filters.search)
-      if (filters.category) params.append('category', filters.category)
-      params.append('sort', filters.sort)
-
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/products?${params}`)
-      const data = await response.json()
-      setProducts(data.products || [])
-    } catch (error) {
-      console.error('Failed to fetch products:', error)
-    } finally {
-      setLoading(false)
+  const filterProducts = () => {
+    let filtered = [...sampleProducts]
+    
+    // Filter by category
+    if (filters.category) {
+      filtered = filtered.filter(product => product.category.slug === filters.category)
     }
-  }
-
-  const fetchCategories = async () => {
-    try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/categories`)
-      const data = await response.json()
-      setCategories(data)
-    } catch (error) {
-      console.error('Failed to fetch categories:', error)
+    
+    // Filter by search
+    if (filters.search) {
+      filtered = filtered.filter(product => 
+        product.name.toLowerCase().includes(filters.search.toLowerCase()) ||
+        product.description.toLowerCase().includes(filters.search.toLowerCase())
+      )
     }
+    
+    // Sort products
+    filtered.sort((a, b) => {
+      switch (filters.sort) {
+        case 'price':
+          return a.price - b.price
+        case 'name':
+          return a.name.localeCompare(b.name)
+        default:
+          return 0
+      }
+    })
+    
+    setProducts(filtered)
   }
 
   return (
@@ -116,8 +119,11 @@ export default function HomePage() {
                 <h2 className="text-3xl font-bold text-gray-900 mb-2 md:mb-0">🛍️ Featured Products</h2>
                 <div className="flex items-center space-x-4">
                   <p className="text-gray-600 bg-blue-50 px-4 py-2 rounded-full font-medium">
-                    {products.length} products found
+                    {products.length} of {sampleProducts.length} products
                   </p>
+                  <div className="text-sm text-gray-500">
+                    🏪 {categories.length} Categories Available
+                  </div>
                 </div>
               </div>
               
