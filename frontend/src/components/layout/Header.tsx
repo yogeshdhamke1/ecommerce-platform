@@ -1,11 +1,24 @@
 'use client'
 
 import Link from 'next/link'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { ShoppingCartIcon, UserIcon, Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
+import { LanguageCurrencySelector } from '@/components/common/LanguageCurrencySelector'
+import { useTranslation } from '@/lib/translations'
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [currentLang, setCurrentLang] = useState('en')
+  const { t } = useTranslation(currentLang)
+
+  useEffect(() => {
+    const handleLanguageChange = (event: any) => {
+      setCurrentLang(event.detail)
+    }
+    
+    window.addEventListener('languageChange', handleLanguageChange)
+    return () => window.removeEventListener('languageChange', handleLanguageChange)
+  }, [])
 
   return (
     <header className="bg-white shadow-lg border-b border-gray-100 sticky top-0 z-50">
@@ -18,19 +31,26 @@ export function Header() {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
-            <Link href="/" className="text-gray-700 hover:text-blue-600 font-medium transition-colors px-3 py-2 rounded-lg hover:bg-blue-50">Home</Link>
-            <Link href="/products" className="text-gray-700 hover:text-blue-600 font-medium transition-colors px-3 py-2 rounded-lg hover:bg-blue-50">Products</Link>
-            <Link href="/categories" className="text-gray-700 hover:text-blue-600 font-medium transition-colors px-3 py-2 rounded-lg hover:bg-blue-50">Categories</Link>
-            <Link href="/about" className="text-gray-700 hover:text-blue-600 font-medium transition-colors px-3 py-2 rounded-lg hover:bg-blue-50">About</Link>
+            <Link href="/" className="text-gray-700 hover:text-blue-600 font-medium transition-colors px-3 py-2 rounded-lg hover:bg-blue-50">{t('home')}</Link>
+            <Link href="/products" className="text-gray-700 hover:text-blue-600 font-medium transition-colors px-3 py-2 rounded-lg hover:bg-blue-50">{t('products')}</Link>
+            <Link href="/categories" className="text-gray-700 hover:text-blue-600 font-medium transition-colors px-3 py-2 rounded-lg hover:bg-blue-50">{t('categories')}</Link>
+            <Link href="/about" className="text-gray-700 hover:text-blue-600 font-medium transition-colors px-3 py-2 rounded-lg hover:bg-blue-50">{t('about')}</Link>
           </nav>
 
           {/* Actions */}
           <div className="flex items-center space-x-2">
+            <LanguageCurrencySelector />
             <Link href="/cart" className="p-3 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all relative">
               <ShoppingCartIcon className="h-6 w-6" />
               <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">2</span>
             </Link>
-            <Link href="/login" className="p-3 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all">
+            <Link href="/orders" className="p-3 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all" title="My Orders">
+              📦
+            </Link>
+            <Link href="/admin" className="p-3 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all" title="Admin">
+              🔧
+            </Link>
+            <Link href="/dashboard" className="p-3 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all" title="Dashboard">
               <UserIcon className="h-6 w-6" />
             </Link>
             

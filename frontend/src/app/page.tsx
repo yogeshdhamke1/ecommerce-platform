@@ -7,11 +7,26 @@ import { SearchBar } from '@/components/common/SearchBar'
 import { Hero } from '@/components/home/Hero'
 import { FeaturedCategories } from '@/components/home/FeaturedCategories'
 import { sampleCategories, sampleProducts } from '@/lib/sampleData'
+import { useTranslation } from '@/lib/translations'
 
 export default function HomePage() {
   const [products, setProducts] = useState(sampleProducts)
   const [categories] = useState(sampleCategories)
   const [loading, setLoading] = useState(false)
+  const [currentLang, setCurrentLang] = useState('en')
+  const { t } = useTranslation(currentLang)
+
+  useEffect(() => {
+    const handleLanguageChange = (event: any) => {
+      setCurrentLang(event.detail)
+    }
+    
+    const savedLang = localStorage.getItem('language') || 'en'
+    setCurrentLang(savedLang)
+    
+    window.addEventListener('languageChange', handleLanguageChange)
+    return () => window.removeEventListener('languageChange', handleLanguageChange)
+  }, [])
   const [filters, setFilters] = useState({
     search: '',
     category: '',
@@ -119,10 +134,10 @@ export default function HomePage() {
                 <h2 className="text-3xl font-bold text-gray-900 mb-2 md:mb-0">🛍️ Featured Products</h2>
                 <div className="flex items-center space-x-4">
                   <p className="text-gray-600 bg-blue-50 px-4 py-2 rounded-full font-medium">
-                    {products.length} of {sampleProducts.length} products
+                    {products.length} of {sampleProducts.length} {t('productsFound')}
                   </p>
                   <div className="text-sm text-gray-500">
-                    🏪 {categories.length} Categories Available
+                    🏪 {categories.length} {t('categoriesAvailable')}
                   </div>
                 </div>
               </div>

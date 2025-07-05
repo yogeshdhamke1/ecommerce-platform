@@ -1,5 +1,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
+import { useState, useEffect } from 'react'
+import { convertCurrency, formatCurrency } from '@/components/common/LanguageCurrencySelector'
 
 interface Product {
   id: string
@@ -16,6 +18,20 @@ interface Props {
 }
 
 export function ProductGrid({ products }: Props) {
+  const [currentCurrency, setCurrentCurrency] = useState('USD')
+
+  useEffect(() => {
+    const handleCurrencyChange = (event: any) => {
+      setCurrentCurrency(event.detail)
+    }
+    
+    const savedCurrency = localStorage.getItem('currency') || 'USD'
+    setCurrentCurrency(savedCurrency)
+    
+    window.addEventListener('currencyChange', handleCurrencyChange)
+    return () => window.removeEventListener('currencyChange', handleCurrencyChange)
+  }, [])
+
   if (products.length === 0) {
     return (
       <div className="text-center py-20">
@@ -60,7 +76,7 @@ export function ProductGrid({ products }: Props) {
               
               <div className="flex items-center justify-between">
                 <span className="text-2xl font-bold text-blue-600">
-                  ${product.price}
+                  {formatCurrency(convertCurrency(product.price, 'USD', currentCurrency), currentCurrency)}
                 </span>
                 
                 {product.averageRating && (

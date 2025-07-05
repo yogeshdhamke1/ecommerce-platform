@@ -141,9 +141,9 @@ export default function CartPage() {
               </div>
             </div>
             
-            <button className="w-full btn-primary text-lg py-4 mb-4">
+            <Link href="/checkout" className="block w-full btn-primary text-lg py-4 mb-4 text-center">
               Proceed to Checkout
-            </button>
+            </Link>
             
             <Link href="/products" className="block text-center text-blue-600 hover:text-blue-700">
               Continue Shopping

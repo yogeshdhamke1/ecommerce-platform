@@ -1,22 +1,49 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { StarIcon, HeartIcon, ShoppingCartIcon } from '@heroicons/react/24/outline'
 import { StarIcon as StarIconSolid, HeartIcon as HeartIconSolid } from '@heroicons/react/24/solid'
 import { sampleProducts } from '@/lib/sampleData'
+import { useTranslation } from '@/lib/translations'
+import { convertCurrency, formatCurrency } from '@/components/common/LanguageCurrencySelector'
 
 export default function ProductPage({ params }: { params: { slug: string } }) {
   const product = sampleProducts.find(p => p.slug === params.slug)
   const [quantity, setQuantity] = useState(1)
   const [isFavorite, setIsFavorite] = useState(false)
+  const [currentLang, setCurrentLang] = useState('en')
+  const [currentCurrency, setCurrentCurrency] = useState('USD')
+  const { t } = useTranslation(currentLang)
+
+  useEffect(() => {
+    const handleLanguageChange = (event: any) => {
+      setCurrentLang(event.detail)
+    }
+    
+    const handleCurrencyChange = (event: any) => {
+      setCurrentCurrency(event.detail)
+    }
+    
+    const savedLang = localStorage.getItem('language') || 'en'
+    const savedCurrency = localStorage.getItem('currency') || 'USD'
+    setCurrentLang(savedLang)
+    setCurrentCurrency(savedCurrency)
+    
+    window.addEventListener('languageChange', handleLanguageChange)
+    window.addEventListener('currencyChange', handleCurrencyChange)
+    return () => {
+      window.removeEventListener('languageChange', handleLanguageChange)
+      window.removeEventListener('currencyChange', handleCurrencyChange)
+    }
+  }, [])
 
   if (!product) {
     return (
       <div className="container-custom py-20 text-center">
-        <h1 className="text-4xl font-bold text-gray-900 mb-4">Product Not Found</h1>
-        <Link href="/" className="btn-primary">← Back to Home</Link>
+        <h1 className="text-4xl font-bold text-gray-900 mb-4">{t('productNotFound')}</h1>
+        <Link href="/" className="btn-primary">← {t('backToHome')}</Link>
       </div>
     )
   }
@@ -73,7 +100,9 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
                   </span>
                 </div>
               </div>
-              <p className="text-6xl font-bold text-blue-600 mb-6">${product.price}</p>
+              <p className="text-6xl font-bold text-blue-600 mb-6">
+                {formatCurrency(convertCurrency(product.price, 'USD', currentCurrency), currentCurrency)}
+              </p>
             </div>
 
             <div className="bg-white rounded-2xl p-6 shadow-sm">
@@ -82,7 +111,7 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
               </p>
 
               <div className="flex items-center space-x-4 mb-6">
-                <label className="text-gray-700 font-medium">Quantity:</label>
+                <label className="text-gray-700 font-medium">{t('quantity')}:</label>
                 <div className="flex items-center border border-gray-300 rounded-lg">
                   <button
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
@@ -99,14 +128,14 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
                   </button>
                 </div>
                 <span className="text-sm text-gray-500">
-                  {product.stock} in stock
+                  {product.stock} {t('stock')}
                 </span>
               </div>
 
               <div className="flex space-x-4">
                 <button className="flex-1 btn-primary text-lg py-4">
                   <ShoppingCartIcon className="h-6 w-6 mr-2" />
-                  Add to Cart
+                  {t('addToCart')}
                 </button>
                 <button
                   onClick={() => setIsFavorite(!isFavorite)}
@@ -126,7 +155,7 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
         {/* Related Products */}
         {relatedProducts.length > 0 && (
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 mb-8">Related Products</h2>
+            <h2 className="text-3xl font-bold text-gray-900 mb-8">{t('relatedProducts')}</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {relatedProducts.map((relatedProduct) => (
                 <Link key={relatedProduct.id} href={`/products/${relatedProduct.slug}`}>
@@ -142,7 +171,9 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
                     </div>
                     <div className="p-4">
                       <h3 className="font-semibold text-gray-900 mb-2">{relatedProduct.name}</h3>
-                      <p className="text-blue-600 font-bold">${relatedProduct.price}</p>
+                      <p className="text-blue-600 font-bold">
+                        {formatCurrency(convertCurrency(relatedProduct.price, 'USD', currentCurrency), currentCurrency)}
+                      </p>
                     </div>
                   </div>
                 </Link>
