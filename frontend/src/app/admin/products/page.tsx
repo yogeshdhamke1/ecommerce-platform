@@ -10,6 +10,7 @@ export default function AdminProducts() {
   const [products, setProducts] = useState(sampleProducts)
   const [showAddForm, setShowAddForm] = useState(false)
   const [editingProduct, setEditingProduct] = useState<any>(null)
+  const [categoryFilter, setCategoryFilter] = useState('all')
   const [formData, setFormData] = useState({
     name: '',
     description: '',
@@ -66,6 +67,10 @@ export default function AdminProducts() {
     setShowAddForm(true)
   }
 
+  const filteredProducts = categoryFilter === 'all' 
+    ? products 
+    : products.filter(product => product.category.slug === categoryFilter)
+
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="container-custom py-8">
@@ -85,6 +90,27 @@ export default function AdminProducts() {
               <PlusIcon className="h-5 w-5 mr-2" />
               Add Product
             </button>
+          </div>
+        </div>
+
+        {/* Filters */}
+        <div className="bg-white rounded-2xl shadow-sm p-6 mb-8">
+          <div className="flex flex-wrap gap-4">
+            <select
+              value={categoryFilter}
+              onChange={(e) => setCategoryFilter(e.target.value)}
+              className="input-field w-auto"
+            >
+              <option value="all">All Categories</option>
+              <option value="jewelry">Jewelry</option>
+              <option value="electronics">Electronics</option>
+              <option value="fashion">Fashion</option>
+              <option value="home-garden">Home & Garden</option>
+              <option value="sports">Sports</option>
+            </select>
+            <div className="text-sm text-gray-600 flex items-center">
+              Showing {filteredProducts.length} of {products.length} products
+            </div>
           </div>
         </div>
 
@@ -185,7 +211,7 @@ export default function AdminProducts() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200">
-                {products.map((product) => (
+                {filteredProducts.map((product) => (
                   <tr key={product.id} className="hover:bg-gray-50">
                     <td className="px-6 py-4">
                       <div className="flex items-center space-x-4">

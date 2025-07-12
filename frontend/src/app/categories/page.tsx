@@ -2,34 +2,18 @@
 
 import Link from 'next/link'
 import Image from 'next/image'
-import { useState, useEffect } from 'react'
 import { sampleCategories, sampleProducts } from '@/lib/sampleData'
-import { useTranslation } from '@/lib/translations'
 
 export default function CategoriesPage() {
-  const [currentLang, setCurrentLang] = useState('en')
-  const { t } = useTranslation(currentLang)
-
-  useEffect(() => {
-    const handleLanguageChange = (event: any) => {
-      setCurrentLang(event.detail)
-    }
-    
-    const savedLang = localStorage.getItem('language') || 'en'
-    setCurrentLang(savedLang)
-    
-    window.addEventListener('languageChange', handleLanguageChange)
-    return () => window.removeEventListener('languageChange', handleLanguageChange)
-  }, [])
 
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="container-custom py-12">
         {/* Header */}
         <div className="text-center mb-16">
-          <h1 className="text-5xl font-bold text-gray-900 mb-6">{t('shopByCategory')}</h1>
+          <h1 className="text-5xl font-bold text-gray-900 mb-6">Shop by Category</h1>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            {t('exploreProducts')}
+            Explore our wide range of products across different categories
           </p>
         </div>
 

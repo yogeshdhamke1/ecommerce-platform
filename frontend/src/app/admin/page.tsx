@@ -93,7 +93,7 @@ export default function AdminDashboard() {
         </div>
 
         {/* Quick Actions */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6 mb-8">
           <Link href="/admin/products" className="bg-white rounded-2xl shadow-sm p-6 hover:shadow-lg transition-shadow">
             <div className="flex items-center space-x-4">
               <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
@@ -174,6 +174,30 @@ export default function AdminDashboard() {
               <div>
                 <h3 className="text-lg font-semibold text-gray-900">CRM System</h3>
                 <p className="text-gray-600">Customer relationship management</p>
+              </div>
+            </div>
+          </Link>
+
+          <Link href="/admin/reports" className="bg-white rounded-2xl shadow-sm p-6 hover:shadow-lg transition-shadow">
+            <div className="flex items-center space-x-4">
+              <div className="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center">
+                <span className="text-2xl">📈</span>
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900">Reports</h3>
+                <p className="text-gray-600">Generate business reports</p>
+              </div>
+            </div>
+          </Link>
+
+          <Link href="/admin/settings" className="bg-white rounded-2xl shadow-sm p-6 hover:shadow-lg transition-shadow">
+            <div className="flex items-center space-x-4">
+              <div className="w-12 h-12 bg-gray-100 rounded-xl flex items-center justify-center">
+                <span className="text-2xl">⚙️</span>
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900">Settings</h3>
+                <p className="text-gray-600">System configuration</p>
               </div>
             </div>
           </Link>

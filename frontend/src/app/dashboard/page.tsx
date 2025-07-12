@@ -3,13 +3,10 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { useTranslation } from '@/lib/translations'
 
 export default function DashboardPage() {
   const router = useRouter()
   const [user, setUser] = useState<any>(null)
-  const [currentLang, setCurrentLang] = useState('en')
-  const { t } = useTranslation(currentLang)
 
   useEffect(() => {
     const userData = localStorage.getItem('user')
@@ -18,16 +15,6 @@ export default function DashboardPage() {
     } else {
       setUser(JSON.parse(userData))
     }
-    
-    const handleLanguageChange = (event: any) => {
-      setCurrentLang(event.detail)
-    }
-    
-    const savedLang = localStorage.getItem('language') || 'en'
-    setCurrentLang(savedLang)
-    
-    window.addEventListener('languageChange', handleLanguageChange)
-    return () => window.removeEventListener('languageChange', handleLanguageChange)
   }, [router])
 
   const handleLogout = () => {
@@ -45,9 +32,9 @@ export default function DashboardPage() {
           <div className="flex flex-col md:flex-row md:justify-between md:items-center">
             <div>
               <h1 className="text-4xl font-bold text-gray-900 mb-2">
-                {t('welcomeBack')}, {user.name}! 👋
+                Welcome back, {user.name}! 👋
               </h1>
-              <p className="text-gray-600">{t('manageAccount')}</p>
+              <p className="text-gray-600">Manage your account and orders</p>
             </div>
             <button
               onClick={handleLogout}
@@ -63,22 +50,22 @@ export default function DashboardPage() {
           <div className="bg-white rounded-2xl shadow-sm p-6 text-center">
             <div className="text-3xl mb-2">📦</div>
             <div className="text-2xl font-bold text-blue-600">3</div>
-            <div className="text-gray-600">{t('totalOrders')}</div>
+            <div className="text-gray-600">Total Orders</div>
           </div>
           <div className="bg-white rounded-2xl shadow-sm p-6 text-center">
             <div className="text-3xl mb-2">❤️</div>
             <div className="text-2xl font-bold text-red-600">5</div>
-            <div className="text-gray-600">{t('wishlistItems')}</div>
+            <div className="text-gray-600">Wishlist Items</div>
           </div>
           <div className="bg-white rounded-2xl shadow-sm p-6 text-center">
             <div className="text-3xl mb-2">⭐</div>
             <div className="text-2xl font-bold text-yellow-600">2</div>
-            <div className="text-gray-600">{t('reviewsWritten')}</div>
+            <div className="text-gray-600">Reviews Written</div>
           </div>
           <div className="bg-white rounded-2xl shadow-sm p-6 text-center">
             <div className="text-3xl mb-2">💰</div>
             <div className="text-2xl font-bold text-green-600">$4,515</div>
-            <div className="text-gray-600">{t('totalSpent')}</div>
+            <div className="text-gray-600">Total Spent</div>
           </div>
         </div>
 
@@ -90,8 +77,8 @@ export default function DashboardPage() {
                 <span className="text-2xl">📦</span>
               </div>
               <div>
-                <h3 className="text-lg font-semibold text-gray-900">{t('myOrders')}</h3>
-                <p className="text-gray-600">{t('trackPackage')}</p>
+                <h3 className="text-lg font-semibold text-gray-900">My Orders</h3>
+                <p className="text-gray-600">Track and manage your orders</p>
               </div>
             </div>
           </Link>
@@ -102,8 +89,8 @@ export default function DashboardPage() {
                 <span className="text-2xl">❤️</span>
               </div>
               <div>
-                <h3 className="text-lg font-semibold text-gray-900">{t('wishlist')}</h3>
-                <p className="text-gray-600">{t('viewOrderDetails')}</p>
+                <h3 className="text-lg font-semibold text-gray-900">Wishlist</h3>
+                <p className="text-gray-600">View your saved items</p>
               </div>
             </div>
           </Link>
@@ -114,8 +101,8 @@ export default function DashboardPage() {
                 <span className="text-2xl">⭐</span>
               </div>
               <div>
-                <h3 className="text-lg font-semibold text-gray-900">{t('myReviews')}</h3>
-                <p className="text-gray-600">{t('viewOrderDetails')}</p>
+                <h3 className="text-lg font-semibold text-gray-900">My Reviews</h3>
+                <p className="text-gray-600">Manage your product reviews</p>
               </div>
             </div>
           </Link>
@@ -126,8 +113,8 @@ export default function DashboardPage() {
                 <span className="text-2xl">👤</span>
               </div>
               <div>
-                <h3 className="text-lg font-semibold text-gray-900">{t('profileSettings')}</h3>
-                <p className="text-gray-600">{t('update')}</p>
+                <h3 className="text-lg font-semibold text-gray-900">Profile Settings</h3>
+                <p className="text-gray-600">Update your information</p>
               </div>
             </div>
           </Link>
@@ -150,8 +137,8 @@ export default function DashboardPage() {
                 <span className="text-2xl">🛍️</span>
               </div>
               <div>
-                <h3 className="text-lg font-semibold text-gray-900">{t('continueShopping')}</h3>
-                <p className="text-gray-600">{t('browseCategories')}</p>
+                <h3 className="text-lg font-semibold text-gray-900">Continue Shopping</h3>
+                <p className="text-gray-600">Browse our products</p>
               </div>
             </div>
           </Link>

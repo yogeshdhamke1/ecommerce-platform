@@ -2,9 +2,7 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import { useState, useEffect } from 'react'
 import { downloadInvoice } from '@/lib/invoiceGenerator'
-import { useTranslation } from '@/lib/translations'
 
 const sampleOrders = [
   {
@@ -80,28 +78,14 @@ const getStatusIcon = (status: string) => {
 }
 
 export default function OrdersPage() {
-  const [currentLang, setCurrentLang] = useState('en')
-  const { t } = useTranslation(currentLang)
-
-  useEffect(() => {
-    const handleLanguageChange = (event: any) => {
-      setCurrentLang(event.detail)
-    }
-    
-    const savedLang = localStorage.getItem('language') || 'en'
-    setCurrentLang(savedLang)
-    
-    window.addEventListener('languageChange', handleLanguageChange)
-    return () => window.removeEventListener('languageChange', handleLanguageChange)
-  }, [])
 
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="container-custom py-12">
         <div className="flex justify-between items-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-900">📦 {t('myOrders')}</h1>
+          <h1 className="text-4xl font-bold text-gray-900">📦 My Orders</h1>
           <Link href="/products" className="btn-primary">
-            {t('continueShopping')}
+            Continue Shopping
           </Link>
         </div>
 
@@ -167,7 +151,7 @@ export default function OrdersPage() {
                     <div className="flex flex-col sm:flex-row gap-3">
                       {order.tracking && (
                         <button className="btn-primary flex-1">
-                          🚚 {t('trackPackage')} ({order.tracking})
+                          🚚 Track Package ({order.tracking})
                         </button>
                       )}
                       <button 
@@ -187,11 +171,11 @@ export default function OrdersPage() {
                         })}
                         className="btn-secondary flex-1"
                       >
-                        📄 {t('downloadInvoice')}
+                        📄 Download Invoice
                       </button>
                       {order.status === 'delivered' && (
                         <button className="btn-secondary flex-1">
-                          ⭐ {t('leaveReview')}
+                          ⭐ Leave Review
                         </button>
                       )}
                     </div>

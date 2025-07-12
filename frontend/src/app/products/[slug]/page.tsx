@@ -6,35 +6,24 @@ import Link from 'next/link'
 import { StarIcon, HeartIcon, ShoppingCartIcon } from '@heroicons/react/24/outline'
 import { StarIcon as StarIconSolid, HeartIcon as HeartIconSolid } from '@heroicons/react/24/solid'
 import { sampleProducts } from '@/lib/sampleData'
-import { useTranslation } from '@/lib/translations'
 import { convertCurrency, formatCurrency } from '@/components/common/LanguageCurrencySelector'
 
 export default function ProductPage({ params }: { params: { slug: string } }) {
   const product = sampleProducts.find(p => p.slug === params.slug)
   const [quantity, setQuantity] = useState(1)
   const [isFavorite, setIsFavorite] = useState(false)
-  const [currentLang, setCurrentLang] = useState('en')
   const [currentCurrency, setCurrentCurrency] = useState('USD')
-  const { t } = useTranslation(currentLang)
 
   useEffect(() => {
-    const handleLanguageChange = (event: any) => {
-      setCurrentLang(event.detail)
-    }
-    
     const handleCurrencyChange = (event: any) => {
       setCurrentCurrency(event.detail)
     }
     
-    const savedLang = localStorage.getItem('language') || 'en'
     const savedCurrency = localStorage.getItem('currency') || 'USD'
-    setCurrentLang(savedLang)
     setCurrentCurrency(savedCurrency)
     
-    window.addEventListener('languageChange', handleLanguageChange)
     window.addEventListener('currencyChange', handleCurrencyChange)
     return () => {
-      window.removeEventListener('languageChange', handleLanguageChange)
       window.removeEventListener('currencyChange', handleCurrencyChange)
     }
   }, [])
@@ -42,8 +31,8 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
   if (!product) {
     return (
       <div className="container-custom py-20 text-center">
-        <h1 className="text-4xl font-bold text-gray-900 mb-4">{t('productNotFound')}</h1>
-        <Link href="/" className="btn-primary">← {t('backToHome')}</Link>
+        <h1 className="text-4xl font-bold text-gray-900 mb-4">Product Not Found</h1>
+        <Link href="/" className="btn-primary">← Back to Home</Link>
       </div>
     )
   }
@@ -111,7 +100,7 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
               </p>
 
               <div className="flex items-center space-x-4 mb-6">
-                <label className="text-gray-700 font-medium">{t('quantity')}:</label>
+                <label className="text-gray-700 font-medium">Quantity:</label>
                 <div className="flex items-center border border-gray-300 rounded-lg">
                   <button
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
@@ -128,14 +117,14 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
                   </button>
                 </div>
                 <span className="text-sm text-gray-500">
-                  {product.stock} {t('stock')}
+                  {product.stock} in stock
                 </span>
               </div>
 
               <div className="flex space-x-4">
                 <button className="flex-1 btn-primary text-lg py-4">
                   <ShoppingCartIcon className="h-6 w-6 mr-2" />
-                  {t('addToCart')}
+                  Add to Cart
                 </button>
                 <button
                   onClick={() => setIsFavorite(!isFavorite)}
@@ -155,7 +144,7 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
         {/* Related Products */}
         {relatedProducts.length > 0 && (
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 mb-8">{t('relatedProducts')}</h2>
+            <h2 className="text-3xl font-bold text-gray-900 mb-8">Related Products</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {relatedProducts.map((relatedProduct) => (
                 <Link key={relatedProduct.id} href={`/products/${relatedProduct.slug}`}>
