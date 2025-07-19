@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import DatabaseStatus from '@/components/admin/DatabaseStatus'
 
 export default function AdminDashboard() {
   const router = useRouter()
@@ -234,8 +235,9 @@ export default function AdminDashboard() {
           </div>
 
           <div className="bg-white rounded-2xl shadow-sm p-6">
-            <h2 className="text-xl font-bold text-gray-900 mb-4">Alerts</h2>
+            <h2 className="text-xl font-bold text-gray-900 mb-4">System Status</h2>
             <div className="space-y-4">
+              <DatabaseStatus />
               <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
                 <div className="flex items-center">
                   <span className="text-red-500 text-xl mr-3">⚠️</span>

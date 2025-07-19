@@ -1,0 +1,38 @@
+{
+  "name": "ecommerce-platform",
+  "version": "1.0.0",
+  "description": "Complete e-commerce platform with Next.js, Prisma, and PostgreSQL",
+  "main": "index.js",
+  "scripts": {
+    "dev": "cd frontend && npm run dev",
+    "build": "cd frontend && npm run build",
+    "start": "cd frontend && npm run start",
+    "db:migrate": "npx prisma migrate dev",
+    "db:seed": "ts-node database/seed.ts",
+    "db:studio": "npx prisma studio",
+    "db:reset": "npx prisma migrate reset"
+  },
+  "prisma": {
+    "schema": "database/prisma/schema.prisma",
+    "seed": "ts-node database/seed.ts"
+  },
+  "keywords": [
+    "ecommerce",
+    "nextjs",
+    "prisma",
+    "postgresql"
+  ],
+  "author": "Yogesh Dhamke",
+  "license": "MIT",
+  "dependencies": {
+    "@prisma/client": "^5.10.0",
+    "bcrypt": "^5.1.1"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
+    "@types/node": "^20.11.19",
+    "prisma": "^5.10.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
+  }
+}

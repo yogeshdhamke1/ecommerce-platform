@@ -20,7 +20,8 @@ echo    ✅ Advanced Admin dashboard with business intelligence
 echo    ✅ Currency conversion on all product prices
 echo    ✅ Professional UI/UX with responsive design
 echo    ✅ Complete e-commerce flow from cart to invoices
-echo    ✅ 30 pages with full functionality
+echo    ✅ 34 pages with full functionality
+echo    ✅ PostgreSQL database with Prisma ORM integration
 echo.
 echo 🚀 Starting Demo Website...
 echo.
@@ -57,5 +58,11 @@ echo    • Reports: http://localhost:3000/admin/reports
 echo    • Settings: http://localhost:3000/admin/settings
 echo.
 echo 💱 TEST CURRENCY: Click currency selector in header and watch prices change!
+echo.
+echo 📝 DATABASE SETUP:
+echo    • Configure PostgreSQL in .env file
+echo    • Run: npm run db:migrate
+echo    • Run: npm run db:seed
+echo    • Check database status in Admin Dashboard
 echo.
 pause
